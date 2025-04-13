@@ -51,18 +51,8 @@ def google_login():
             f"state=streamlit_login"
         )
 
-        st.write(auth_url)
-
-        st.sidebar.markdown(
-            f"""
-            <a href="{auth_url}" target="_self">
-                <button style='padding:10px 20px;font-size:16px;background-color:#0b72b9;color:white;border:none;border-radius:5px;cursor:pointer;'>
-                    Login with Google
-                </button>
-            </a>
-            """,
-            unsafe_allow_html=True,
-        )
+        #st.write(auth_url)
+        st.sidebar.link_button("🔐 Login with Google", url=auth_url)
         return False
 
     return True
