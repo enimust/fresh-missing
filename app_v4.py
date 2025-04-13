@@ -13,7 +13,7 @@ st.write("Client ID:", st.secrets['google']['client_id'])
 st.write("Redirect URI:", st.secrets['google']['redirect_uri'])
 st.write("Logged-in domain hint:", st.query_params.get('hd'))
 
-
+st.write("My test!")
 
 
 # This is needed to get the database
