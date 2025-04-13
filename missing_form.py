@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 from update_database import store_missing_data
+from db_sync import push_db_to_github
 
 def show_missing_form(dining_hall, meal, dish_ids):
     """Given some data from the menu table, display form
@@ -38,3 +39,6 @@ def show_missing_form(dining_hall, meal, dish_ids):
                 username=username
             )
             st.success(f"✅ Saved {len(missing_ids)} missing items. Thanks, {username}!")
+
+            # Need to send our database to Github private repo
+            push_db_to_github()

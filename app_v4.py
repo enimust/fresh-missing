@@ -5,16 +5,15 @@ from missing_form import show_missing_form
 import datetime
 import pandas as pd
 import requests
-from db_sync import download_db_from_github, push_db_to_github
+from db_sync import download_db_from_github
 
 st.set_page_config(page_title="Dining App", layout="centered")
 
-st.write("Client ID:", st.secrets['google']['client_id'])
-st.write("Redirect URI:", st.secrets['google']['redirect_uri'])
-st.write("Logged-in domain hint:", st.query_params.get('hd'))
-
-st.write("My test!")
-
+# Testing code for Authentication
+# st.write("Client ID:", st.secrets['google']['client_id'])
+# st.write("Redirect URI:", st.secrets['google']['redirect_uri'])
+# st.write("Logged-in domain hint:", st.query_params.get('hd'))
+# st.write("My test!")
 
 # This is needed to get the database
 download_db_from_github()
@@ -226,9 +225,6 @@ if st.session_state.selected_meal:
                 meal=st.session_state["selected_meal"],
                 dish_ids=dish_ids
             )
-
-            # Need to send our database to Github private repo
-            push_db_to_github()
 
         else:
             if st.session_state['menu?']: 
