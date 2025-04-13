@@ -3,7 +3,7 @@ import streamlit as st
 from authlib.integrations.requests_client import OAuth2Session
 
 def google_login():
-    """Handles the Google OAuth login flow for Streamlit."""
+    """Don't change this code!"""
     CLIENT_ID = st.secrets["google"]["client_id"]
     CLIENT_SECRET = st.secrets["google"]["client_secret"]
     REDIRECT_URI = st.secrets["google"]["redirect_uri"]
@@ -19,6 +19,7 @@ def google_login():
         code = params["code"]
         state = params["state"]
 
+        # Restore OAuth session using returned state (from URL)
         oauth = OAuth2Session(
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
@@ -28,6 +29,7 @@ def google_login():
         )
 
         try:
+            # Debugging code that Eni used to debug
             st.write("🔎 Received code:", code)
             st.write("🔎 Received state:", state)
             st.write("🔎 Full query params:", st.query_params)
@@ -37,11 +39,11 @@ def google_login():
             return True
         except Exception as e:
             st.error(f"Login failed: {e}")
-            st.write("Query Params on failure:", params)
+            st.write("Query Params on failure:", params)  # 👈 Add this line
             st.query_params.clear()
             return False
 
-    # 👤 Step 2: Not logged in → show login button with consent & offline access
+    # 👤 Step 2: Not logged in → show login button with state in URL
     if "access_token" not in st.session_state:
         oauth = OAuth2Session(
             client_id=CLIENT_ID,
@@ -49,11 +51,7 @@ def google_login():
             scope=SCOPE,
             redirect_uri=REDIRECT_URI,
         )
-        auth_url, _state = oauth.create_authorization_url(
-            AUTH_ENDPOINT,
-            prompt="consent",            # ✅ force full consent screen
-            access_type="offline"        # ✅ optional, allows refresh tokens
-        )
+        auth_url, _state = oauth.create_authorization_url(AUTH_ENDPOINT)
 
         st.sidebar.markdown(
             f"""
