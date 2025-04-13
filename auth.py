@@ -1,3 +1,6 @@
+import streamlit as st
+import requests
+
 def google_login():
     """Manual OAuth login with a working Google Auth URL."""
     CLIENT_ID = st.secrets["google"]["client_id"]
@@ -47,6 +50,8 @@ def google_login():
             f"prompt=consent&"
             f"state=streamlit_login"
         )
+
+        st.write(auth_url)
 
         st.sidebar.markdown(
             f"""
