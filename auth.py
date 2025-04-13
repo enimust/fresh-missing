@@ -30,15 +30,16 @@ def google_login():
 
         try:
             # Debugging code that Eni used to debug
-            # st.write("🔎 Received code:", code)
-            # st.write("🔎 Received state:", state)
-            # st.write("🔎 Full query params:", st.query_params)
+            st.write("🔎 Received code:", code)
+            st.write("🔎 Received state:", state)
+            st.write("🔎 Full query params:", st.query_params)
             token = oauth.fetch_token(TOKEN_ENDPOINT, code=code)
             st.session_state["access_token"] = token["access_token"]
             st.query_params.clear()
             return True
         except Exception as e:
             st.error(f"Login failed: {e}")
+            st.write("Query Params on failure:", params)  # 👈 Add this line
             st.query_params.clear()
             return False
 
