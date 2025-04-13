@@ -8,7 +8,14 @@ import requests
 from db_sync import download_db_from_github, push_db_to_github
 
 st.set_page_config(page_title="Dining App", layout="centered")
-st.write("Redirect URI:", st.secrets["google"]["redirect_uri"])
+
+st.write("Client ID:", st.secrets['google']['client_id'])
+st.write("Redirect URI:", st.secrets['google']['redirect_uri'])
+st.write("Logged-in domain hint:", st.query_params.get('hd'))
+
+
+
+
 # This is needed to get the database
 download_db_from_github()
 
