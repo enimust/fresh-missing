@@ -3,7 +3,7 @@ from auth import google_login
 from user_profile import render_user_profile
 from missing_form import show_missing_form
 from db_sync import download_db_from_github
-import datetime
+from datetime import datetime
 import pandas as pd
 import requests
 from zoneinfo import ZoneInfo
@@ -201,7 +201,8 @@ if st.session_state.selected_dining_hall:
 
 # If both hall and meal selected, show menu
 if st.session_state.selected_meal:
-    selected_date = datetime.date.today()  
+    selected_date = get_et_now().date() 
+    # added an extra variable to show current date and time on the title
     st.markdown(f"### 🍽️ Menu for *{st.session_state.selected_dining_hall}* — {st.session_state.selected_meal} on {get_et_now().strftime('%m/%d/%Y %-I:%M %p')}")
     
     # Look up the IDs
