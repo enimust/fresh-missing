@@ -2,12 +2,13 @@ import streamlit as st
 from auth import google_login
 from user_profile import render_user_profile
 from missing_form import show_missing_form
+from db_sync import download_db_from_github
 import datetime
 import pandas as pd
 import requests
-from db_sync import download_db_from_github
+from zoneinfo import ZoneInfo
 
-st.set_page_config(page_title="Dining App", layout="centered")
+st.set_page_config(page_title="WFresh Missing", layout="centered")
 
 # Testing code for Authentication
 # st.write("Client ID:", st.secrets['google']['client_id'])
@@ -52,6 +53,10 @@ def render_sidebar():
 
 #===================================================================
 
+def get_et_now():
+    """Return current datetime in Eastern Time (America/New_York)."""
+    return datetime.now(tz=ZoneInfo("America/New_York"))
+
 @st.cache_data
 def get_weekly_menu(date_str, location_id, meal_id):
     """
@@ -80,7 +85,10 @@ def show_compact_menu(menu_data, meal):
 
         # convert to datetime and filter; drop duplicate entries
         df["date"] = pd.to_datetime(df["date"]).dt.date 
-        df = df[df['date']==datetime.date.today()]
+
+        # Fix to deal with ET time instead of UTC time
+        today_et = get_et_now().date()
+        df = df[df['date']==today_et]
         df = df.drop_duplicates(subset="id")
 
         if df.empty:
@@ -194,7 +202,7 @@ if st.session_state.selected_dining_hall:
 # If both hall and meal selected, show menu
 if st.session_state.selected_meal:
     selected_date = datetime.date.today()  
-    st.markdown(f"### 🍽️ Menu for *{st.session_state.selected_dining_hall}* — {st.session_state.selected_meal}")
+    st.markdown(f"### 🍽️ Menu for *{st.session_state.selected_dining_hall}* — {st.session_state.selected_meal} on {get_et_now().strftime('%m/%d/%Y %-I:%M %p')}")
     
     # Look up the IDs
     location_id, meal_id = get_params(dfKeys, 

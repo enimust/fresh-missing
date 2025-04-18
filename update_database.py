@@ -1,6 +1,11 @@
 import sqlite3
 from datetime import datetime
 from typing import List
+from zoneinfo import ZoneInfo
+
+def get_et_now():
+    """Return current datetime in Eastern Time (America/New_York)."""
+    return datetime.now(tz=ZoneInfo("America/New_York"))
 
 # Define the database schema
 # DB_NAME = "missing_menu.db"
@@ -59,7 +64,7 @@ def store_missing_data(
     comment: str,
     username: str
 ):
-    timestamp = datetime.now().isoformat(timespec='seconds')
+    timestamp = get_et_now().isoformat(timespec="seconds")
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
 
